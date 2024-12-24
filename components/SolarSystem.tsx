@@ -2,8 +2,8 @@
 
 import { useState, useRef, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { OrbitControls, Stars, Html, useTexture } from '@react-three/drei'
-import { Vector3, Group } from 'three'
+import { OrbitControls, Stars, useTexture } from '@react-three/drei'
+import { Vector3 } from 'three'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Planet from './Planet'
@@ -49,7 +49,7 @@ interface CameraControllerProps {
 
 function CameraController({ target }: CameraControllerProps) {
   const { camera } = useThree()
-  const controlsRef = useRef<Group>(null)
+  const controlsRef = useRef<OrbitControls>(null) // Correct typing for OrbitControls
 
   useFrame(() => {
     if (controlsRef.current) {
