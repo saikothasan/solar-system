@@ -9,21 +9,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Planet from './Planet'
 
 const planets = [
-  { name: 'Mercury', distance: 57.9, size: 0.383, rotationSpeed: 0.01, texture: '/textures/mercury.jpg' },
-  { name: 'Venus', distance: 108.2, size: 0.949, rotationSpeed: 0.0067, texture: '/textures/venus.jpg' },
-  { name: 'Earth', distance: 149.6, size: 1, rotationSpeed: 0.1, texture: '/textures/earth.jpg' },
-  { name: 'Mars', distance: 227.9, size: 0.532, rotationSpeed: 0.097, texture: '/textures/mars.jpg' },
-  { name: 'Jupiter', distance: 778.5, size: 11.21, rotationSpeed: 0.24, texture: '/textures/jupiter.jpg' },
-  { name: 'Saturn', distance: 1434.0, size: 9.45, rotationSpeed: 0.22, texture: '/textures/saturn.jpg' },
-  { name: 'Uranus', distance: 2871.0, size: 4.01, rotationSpeed: 0.14, texture: '/textures/uranus.jpg' },
-  { name: 'Neptune', distance: 4495.0, size: 3.88, rotationSpeed: 0.15, texture: '/textures/neptune.jpg' },
+  { name: 'Mercury', distance: 57.9, size: 0.383, rotationSpeed: 0.01, texture: '/2k_mercury.jpg' },
+  { name: 'Venus', distance: 108.2, size: 0.949, rotationSpeed: 0.0067, texture: '/2k_venus_surface.jpg' },
+  { name: 'Earth', distance: 149.6, size: 1, rotationSpeed: 0.1, texture: '/2k_earth_daymap.jpg' },
+  { name: 'Mars', distance: 227.9, size: 0.532, rotationSpeed: 0.097, texture: '/2k_mars.jpg' },
+  { name: 'Jupiter', distance: 778.5, size: 11.21, rotationSpeed: 0.24, texture: '/2k_jupiter.jpg' },
+  { name: 'Saturn', distance: 1434.0, size: 9.45, rotationSpeed: 0.22, texture: '/2k_saturn.jpg' },
+  { name: 'Uranus', distance: 2871.0, size: 4.01, rotationSpeed: 0.14, texture: '/2k_uranus.jpg' },
+  { name: 'Neptune', distance: 4495.0, size: 3.88, rotationSpeed: 0.15, texture: '/2k_neptune.jpg' },
 ]
 
 const SCALE_FACTOR = 0.00001
 const SIZE_MULTIPLIER = 1000
 
 function Sun() {
-  const sunTexture = useTexture('/textures/sun.jpg')
+  const sunTexture = useTexture('/2k_sun.jpg')
   return (
     <mesh>
       <sphereGeometry args={[6.96 * SIZE_MULTIPLIER * SCALE_FACTOR, 32, 32]} />
