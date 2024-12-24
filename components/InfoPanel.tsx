@@ -11,7 +11,11 @@ const planetInfo = {
   Neptune: "Neptune is the eighth and farthest-known Solar planet from the Sun."
 }
 
-export default function InfoPanel({ planetName }) {
+interface InfoPanelProps {
+  planetName: keyof typeof planetInfo; // Ensures planetName matches the keys of planetInfo
+}
+
+export default function InfoPanel({ planetName }: InfoPanelProps) {
   return (
     <Card className="absolute bottom-5 right-5 w-80">
       <CardHeader>
@@ -23,4 +27,3 @@ export default function InfoPanel({ planetName }) {
     </Card>
   )
 }
-
