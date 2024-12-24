@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
+import * as THREE from 'three' // Import THREE
 
 interface PlanetProps {
   name: string
@@ -25,7 +26,7 @@ export default function Planet({
   isSelected,
   onClick,
 }: PlanetProps) {
-  const ref = useRef<THREE.Mesh>(null) // Explicitly type the ref
+  const ref = useRef<THREE.Mesh>(null) // Use THREE.Mesh explicitly
 
   const planetTexture = useTexture(texture)
 
