@@ -1,0 +1,114 @@
+'use client'
+
+import { useState, useRef, Suspense } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { OrbitControls, Stars, Html, useTexture } from '@react-three/drei'
+import { Vector3 } from 'three'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Planet from './Planet'
+
+const planets = [
+  { name: 'Mercury', distance: 57.9, size: 0.383, rotationSpeed: 0.01, texture: '/textures/mercury.jpg' },
+  { name: 'Venus', distance: 108.2, size: 0.949, rotationSpeed: 0.0067, texture: '/textures/venus.jpg' },
+  { name: 'Earth', distance: 149.6, size: 1, rotationSpeed: 0.1, texture: '/textures/earth.jpg' },
+  { name: 'Mars', distance: 227.9, size: 0.532, rotationSpeed: 0.097, texture: '/textures/mars.jpg' },
+  { name: 'Jupiter', distance: 778.5, size: 11.21, rotationSpeed: 0.24, texture: '/textures/jupiter.jpg' },
+  { name: 'Saturn', distance: 1434.0, size: 9.45, rotationSpeed: 0.22, texture: '/textures/saturn.jpg' },
+  { name: 'Uranus', distance: 2871.0, size: 4.01, rotationSpeed: 0.14, texture: '/textures/uranus.jpg' },
+  { name: 'Neptune', distance: 4495.0, size: 3.88, rotationSpeed: 0.15, texture: '/textures/neptune.jpg' },
+]
+
+const SCALE_FACTOR = 0.00001
+const SIZE_MULTIPLIER = 1000
+
+function Sun() {
+  const sunTexture = useTexture('/textures/sun.jpg')
+  return (
+    <mesh>
+      <sphereGeometry args={[6.96 * SIZE_MULTIPLIER * SCALE_FACTOR, 32, 32]} />
+      <meshBasicMaterial map={sunTexture} />
+    </mesh>
+  )
+}
+
+function CameraController({ target }) {
+  const { camera } = useThree()
+  const controlsRef = useRef()
+
+  useFrame(() => {
+    if (controlsRef.current) {
+      controlsRef.current.target.lerp(target, 0.05)
+      controlsRef.current.update()
+    }
+  })
+
+  return <OrbitControls ref={controlsRef} enableDamping dampingFactor={0.05} />
+}
+
+export default function SolarSystem() {
+  const [selectedPlanet, setSelectedPlanet] = useState(null)
+  const [cameraTarget, setCameraTarget] = useState(new Vector3(0, 0, 0))
+
+  const handlePlanetClick = (planet) => {
+    setSelectedPlanet(planet)
+    const targetPosition = new Vector3(
+      planet.distance * SCALE_FACTOR,
+      0,
+      0
+    )
+    setCameraTarget(targetPosition)
+  }
+
+  const resetView = () => {
+    setSelectedPlanet(null)
+    setCameraTarget(new Vector3(0, 0, 0))
+  }
+
+  return (
+    <div className="w-full h-screen relative">
+      <Canvas camera={{ position: [0, 200 * SCALE_FACTOR, 500 * SCALE_FACTOR], fov: 60 }}>
+        <Suspense fallback={null}>
+          <ambientLight intensity={0.1} />
+          <pointLight position={[0, 0, 0]} intensity={1} />
+          <Stars radius={1000 * SCALE_FACTOR} depth={50} count={5000} factor={4} saturation={0} fade />
+          <Sun />
+          {planets.map((planet) => (
+            <Planet
+              key={planet.name}
+              {...planet}
+              scaleFactor={SCALE_FACTOR}
+              sizeMultiplier={SIZE_MULTIPLIER}
+              isSelected={selectedPlanet?.name === planet.name}
+              onClick={() => handlePlanetClick(planet)}
+            />
+          ))}
+          <CameraController target={cameraTarget} />
+        </Suspense>
+      </Canvas>
+      <div className="absolute top-5 left-5 space-y-2">
+        <Button onClick={resetView}>View Full Solar System</Button>
+        {planets.map((planet) => (
+          <Button key={planet.name} onClick={() => handlePlanetClick(planet)}>
+            {planet.name}
+          </Button>
+        ))}
+      </div>
+      {selectedPlanet && (
+        <Card className="absolute bottom-5 right-5 w-80">
+          <CardHeader>
+            <CardTitle>{selectedPlanet.name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Distance from Sun: {selectedPlanet.distance} million km</p>
+            <p>Diameter: {(selectedPlanet.size * 12742).toFixed(0)} km</p>
+          </CardContent>
+        </Card>
+      )}
+      <div className="absolute bottom-5 left-5 text-white">
+        <p>Use mouse to rotate, scroll to zoom, and right-click to pan</p>
+      </div>
+    </div>
+  )
+}
+
