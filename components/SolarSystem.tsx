@@ -32,6 +32,7 @@ const planets: PlanetData[] = [
 const SCALE_FACTOR = 0.00001
 const SIZE_MULTIPLIER = 1000
 
+// Sun component
 function Sun() {
   const sunTexture = useTexture('/2k_sun.jpg')
   return (
@@ -48,8 +49,8 @@ interface CameraControllerProps {
 }
 
 function CameraController({ target }: CameraControllerProps) {
-  const { camera } = useThree()
-  const controlsRef = useRef<typeof OrbitControls | null>(null) // Corrected typing using 'typeof OrbitControls'
+  const { camera, gl } = useThree()
+  const controlsRef = useRef<OrbitControls>(null)
 
   useFrame(() => {
     if (controlsRef.current) {
@@ -58,7 +59,16 @@ function CameraController({ target }: CameraControllerProps) {
     }
   })
 
-  return <OrbitControls ref={controlsRef} enableDamping dampingFactor={0.05} />
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      args={[camera, gl.domElement]}
+      enableDamping
+      dampingFactor={0.05}
+      maxDistance={2000}
+      minDistance={1}
+    />
+  )
 }
 
 // SolarSystem component
@@ -79,11 +89,20 @@ export default function SolarSystem() {
 
   return (
     <div className="w-full h-screen relative">
-      <Canvas camera={{ position: [0, 200 * SCALE_FACTOR, 500 * SCALE_FACTOR], fov: 60 }}>
+      <Canvas
+        camera={{ position: [0, 200 * SCALE_FACTOR, 500 * SCALE_FACTOR], fov: 60 }}
+      >
         <Suspense fallback={null}>
           <ambientLight intensity={0.1} />
           <pointLight position={[0, 0, 0]} intensity={1} />
-          <Stars radius={1000 * SCALE_FACTOR} depth={50} count={5000} factor={4} saturation={0} fade />
+          <Stars
+            radius={1000 * SCALE_FACTOR}
+            depth={50}
+            count={5000}
+            factor={4}
+            saturation={0}
+            fade
+          />
           <Sun />
           {planets.map((planet) => (
             <Planet
