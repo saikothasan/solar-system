@@ -25,11 +25,14 @@ export default function Planet({
   isSelected,
   onClick,
 }: PlanetProps) {
-  const ref = useRef()
+  const ref = useRef<THREE.Mesh>(null) // Explicitly type the ref
+
   const planetTexture = useTexture(texture)
 
   useFrame((state, delta) => {
-    ref.current.rotation.y += delta * rotationSpeed
+    if (ref.current) {
+      ref.current.rotation.y += delta * rotationSpeed
+    }
   })
 
   return (
