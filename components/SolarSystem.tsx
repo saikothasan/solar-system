@@ -2,7 +2,7 @@
 
 import { useState, useRef, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { OrbitControls, OrbitControls as OrbitControlsImpl, Stars, useTexture } from '@react-three/drei'
+import { OrbitControls, Stars, useTexture } from '@react-three/drei'
 import { Vector3 } from 'three'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -49,7 +49,7 @@ interface CameraControllerProps {
 
 function CameraController({ target }: CameraControllerProps) {
   const { camera } = useThree()
-  const controlsRef = useRef<OrbitControlsImpl | null>(null) // Correctly typed as OrbitControlsImpl
+  const controlsRef = useRef<typeof OrbitControls | null>(null) // Corrected typing using 'typeof OrbitControls'
 
   useFrame(() => {
     if (controlsRef.current) {
