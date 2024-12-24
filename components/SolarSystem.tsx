@@ -3,12 +3,22 @@
 import { useState, useRef, Suspense } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Stars, Html, useTexture } from '@react-three/drei'
-import { Vector3 } from 'three'
+import { Vector3, Group } from 'three'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Planet from './Planet'
 
-const planets = [
+// Type definitions for planet properties
+interface PlanetData {
+  name: string
+  distance: number
+  size: number
+  rotationSpeed: number
+  texture: string
+}
+
+// Array of planets with properties
+const planets: PlanetData[] = [
   { name: 'Mercury', distance: 57.9, size: 0.383, rotationSpeed: 0.01, texture: '/2k_mercury.jpg' },
   { name: 'Venus', distance: 108.2, size: 0.949, rotationSpeed: 0.0067, texture: '/2k_venus_surface.jpg' },
   { name: 'Earth', distance: 149.6, size: 1, rotationSpeed: 0.1, texture: '/2k_earth_daymap.jpg' },
@@ -32,9 +42,14 @@ function Sun() {
   )
 }
 
-function CameraController({ target }) {
+// Props for CameraController
+interface CameraControllerProps {
+  target: Vector3
+}
+
+function CameraController({ target }: CameraControllerProps) {
   const { camera } = useThree()
-  const controlsRef = useRef()
+  const controlsRef = useRef<Group>(null)
 
   useFrame(() => {
     if (controlsRef.current) {
@@ -46,17 +61,14 @@ function CameraController({ target }) {
   return <OrbitControls ref={controlsRef} enableDamping dampingFactor={0.05} />
 }
 
+// SolarSystem component
 export default function SolarSystem() {
-  const [selectedPlanet, setSelectedPlanet] = useState(null)
-  const [cameraTarget, setCameraTarget] = useState(new Vector3(0, 0, 0))
+  const [selectedPlanet, setSelectedPlanet] = useState<PlanetData | null>(null)
+  const [cameraTarget, setCameraTarget] = useState<Vector3>(new Vector3(0, 0, 0))
 
-  const handlePlanetClick = (planet) => {
+  const handlePlanetClick = (planet: PlanetData) => {
     setSelectedPlanet(planet)
-    const targetPosition = new Vector3(
-      planet.distance * SCALE_FACTOR,
-      0,
-      0
-    )
+    const targetPosition = new Vector3(planet.distance * SCALE_FACTOR, 0, 0)
     setCameraTarget(targetPosition)
   }
 
@@ -111,4 +123,3 @@ export default function SolarSystem() {
     </div>
   )
 }
-
