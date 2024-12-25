@@ -329,8 +329,6 @@ export default function Home() {
                     className="w-full bg-green-500 hover:bg-green-600 text-black font-bold"
                   >
                     Generate
-                  >
-                    Generate
                   </Button>
                   <Button 
                     onClick={copyCards}
