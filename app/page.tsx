@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
-import { Check, CreditCard, Info, HelpCircle } from 'lucide-react'
+import { Check, CreditCard, Info, HelpCircle, Send } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -414,6 +414,35 @@ export default function Home() {
             </Card>
           </section>
         </div>
+
+        {/* Add new Telegram section here */}
+        <section className="py-12 px-4">
+          <Card className="max-w-2xl mx-auto bg-gradient-to-r from-blue-600 to-blue-400 border-none shadow-xl">
+            <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
+              <div className="bg-white p-4 rounded-full">
+                <Send className="w-8 h-8 text-blue-500" />
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white">Join Our Telegram Channel</h2>
+              <p className="text-blue-100">
+                Stay updated with the latest tools, tips, and community discussions
+              </p>
+              <Button 
+                asChild
+                className="bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg px-8 py-6"
+              >
+                <a 
+                  href="https://t.me/nullsrc" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <Send className="w-5 h-5" />
+                  Join Channel
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+        </section>
 
         <footer className="text-center text-sm text-gray-400 pt-8 border-t border-gray-800">
           <p>© {new Date().getFullYear()} Multi BIN CC Generator. For educational purposes only.</p>
